@@ -267,7 +267,9 @@ void test_sound()
         }
       }
       frequency_avg /= index_avg; 
+      holdingRegisters[3] =(uint16_t) frequency_avg; 
       Serial1.println(frequency_avg);
+      Serial1.println(holdingRegisters[3]);   // register 4004
 }
 
 uint32_t invert_0_and_1(uint32_t data) {
