@@ -30,9 +30,9 @@ float frequency;
 int16_t samples[sampleSize];
 uint8_t sound_check =0; 
 uint8_t sound_index = 0; 
-uint16_t frequency_avg; 
 uint8_t data_ready = 0; 
-uint16_t frequency_buff[20]; 
+float frequency_buff[20];
+float amplitudeInDB_buff[20]; 
 // ArduinoFFT FFT = ArduinoFFT(); // Tạo đối tượng FFT
 ArduinoFFT<float> FFT = ArduinoFFT<float>(vReal, vImag, sampleSize, samplingFrequency, true);
 
@@ -209,7 +209,9 @@ void sound_process()
   // // Chuyển biên độ thành dB
   amplitudeInDB = 20.0 * log10(amplitude + 1e-6);
   frequency_buff[sound_index++] = frequency; 
+  amplitudeInDB_buff[sound_index++] = amplitudeInDB; 
   Serial1.println(frequency);
+  Serial1.println(amplitudeInDB);
   delay_custom(300);
 }
 
@@ -256,20 +258,25 @@ void test_sound()
       sound_process(); 
       
     }  
-    uint16_t frequency_avg = 0; 
-      uint8_t index_avg = 0; 
-      for(uint8_t i = 0; i<20; i++)
+    float frequency_avg = 0; 
+    uint8_t index_avg = 0; 
+    float amplitudeInDB_avg = 0; 
+    for(uint8_t i = 0; i<20; i++)
+    {
+      if(frequency_buff[i] > 2000)
       {
-        if(frequency_buff[i] > 2000)
-        {
-          frequency_avg +=  frequency_buff[i];
-          index_avg ++; 
-        }
+        frequency_avg +=  frequency_buff[i];
+        amplitudeInDB_avg += amplitudeInDB_buff[i]; 
+        index_avg ++; 
       }
-      frequency_avg /= index_avg; 
-      holdingRegisters[3] =(uint16_t) frequency_avg; 
-      Serial1.println(frequency_avg);
-      Serial1.println(holdingRegisters[3]);   // register 4004
+    }
+    frequency_avg /= index_avg; 
+    amplitudeInDB_avg /= index_avg; 
+    holdingRegisters[3] =(uint16_t) frequency_avg; 
+    holdingRegisters[4] =(uint16_t) amplitudeInDB_avg;
+    Serial1.println(amplitudeInDB_avg);
+    Serial1.println(holdingRegisters[3]);   // register 4004
+    Serial1.println(holdingRegisters[4]);
 }
 
 uint32_t invert_0_and_1(uint32_t data) {
