@@ -13,6 +13,8 @@
 SoftwareSerial mySerial(10, 11);  // RX, TX
 #endif
 
+#define SAMPLE_NUM (200)
+
 ModbusRTUSlave modbus(Serial, 13);  // serial port, driver enable pin for rs-485
 bool coils[20];
 bool discreteInputs[20];
@@ -30,8 +32,8 @@ float frequency;
 int16_t samples[sampleSize];
 uint8_t sound_index = 0; 
 uint8_t data_ready = 0; 
-float frequency_buff[50];
-float amplitudeInDB_buff[50]; 
+float frequency_buff[SAMPLE_NUM];
+float amplitudeInDB_buff[SAMPLE_NUM]; 
 // ArduinoFFT FFT = ArduinoFFT(); // Tạo đối tượng FFT
 ArduinoFFT<float> FFT = ArduinoFFT<float>(vReal, vImag, sampleSize, samplingFrequency, true);
 
@@ -97,6 +99,13 @@ void loop() {
       case 9:
         IR_send(IR_CODE_OFF_OLD_CH1);
         break;
+      case 10:
+        for(uint8_t i =0; i<4; i++)
+        {
+          IR_send(IR_CODE_INCREASE_CH1);
+          delay(500); 
+        }
+      break; 
       default:
         break;
     }
@@ -129,7 +138,7 @@ void loop() {
         break;
       case 9:
         IR_send(IR_CODE_OFF_OLD_CH2);
-        break;
+        break;       
       default:
         break;
     }
@@ -154,7 +163,7 @@ void onPDMData() {
 }
 void sound_process()
 {
-  Serial1.println("sound process");
+  // Serial1.println("sound process");
   // delay_custom(15);
   // Chuyển đổi dữ liệu từ dạng PDM thành dạng PCM
   for (int i = 0; i < sampleSize; i++) {
@@ -193,7 +202,7 @@ void delay_custom(uint32_t delay_time)
 void test_sound()
 {
     sound_index = 0; 
-    for(int i= 0; i<50; i++)
+    for(int i= 0; i<SAMPLE_NUM; i++)
     {
       data_ready = 0;
       while(data_ready == 0)
@@ -201,15 +210,16 @@ void test_sound()
         Serial1.println("Loop");
       }
       sound_process(); 
+      // delay(10);
     }
  
     float frequency_avg = 0; 
     uint8_t index_avg = 0; 
     float amplitudeInDB_avg = 0; 
-    Serial1.println("frequency_buff[] = ");
-    for(uint8_t i = 0; i<50; i++)
+    
+    for(uint8_t i = 0; i<SAMPLE_NUM; i++)
     {
-      Serial1.println(frequency_buff[i]);
+      // Serial1.println(frequency_buff[i]);
       if(frequency_buff[i] > 2000)
       {
         frequency_avg +=  frequency_buff[i];
@@ -223,7 +233,7 @@ void test_sound()
     holdingRegisters[3] =(uint16_t) frequency_avg; 
     holdingRegisters[4] =(uint16_t) amplitudeInDB_avg;
     holdingRegisters[2] = 0;
-    for(uint8_t i=0; i<50; i++)
+    for(uint8_t i=0; i<SAMPLE_NUM; i++)
     {
       frequency_buff[i] = 0;
       amplitudeInDB_buff[i] = 0; 
