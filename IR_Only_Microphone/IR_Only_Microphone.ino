@@ -71,77 +71,77 @@ void loop() {
 
   modbus.poll();
   if (modbus.already()) {
-    switch (holdingRegisters[0]) {
-      case 1:
-        IR_send(IR_CODE_SECURITY_CH1);
-        break;
-      case 2:
-        IR_send(IR_CODE_FULL_MAIN_LIGHT_CH1);
-        break;
-      case 3:
-        IR_send(IR_CODE_INCREASE_CH1);
-        break;
-      case 4:
-        IR_send(IR_CODE_DECREASE_CH1);
-        break;
-      case 5:
-        IR_send(IR_CODE_ON_OFF_CH1);
-        break;
-      case 6:
-        IR_send(IR_CODE_SLEEP_LIGHT_CH1);
-        break;
-      case 7:
-        IR_send(IR_CODE_TIMER_CH1);
-        break;
-      case 8:
-        IR_send(IR_CODE_ON_OLD_CH1);
-        break;
-      case 9:
-        IR_send(IR_CODE_OFF_OLD_CH1);
-        break;
-      case 10:
-        for(uint8_t i =0; i<4; i++)
-        {
-          IR_send(IR_CODE_INCREASE_CH1);
-          delay(500); 
-        }
-      break; 
-      default:
-        break;
-    }
-    delay_custom(300);
-    switch (holdingRegisters[1]) {
-      case 1:
-        IR_send(IR_CODE_SECURITY_CH2);
-        break;
-      case 2:
-        IR_send(IR_CODE_FULL_MAIN_LIGHT_CH2);
-        break;
-      case 3:
-        IR_send(IR_CODE_INCREASE_CH2);
-        break;
-      case 4:
-        IR_send(IR_CODE_DECREASE_CH2);
-        break;
-      case 5:
-        IR_send(IR_CODE_ON_OFF_CH2);
-        Serial1.println("Run5");
-        break;
-      case 6:
-        IR_send(IR_CODE_SLEEP_LIGHT_CH2);
-        break;
-      case 7:
-        IR_send(IR_CODE_TIMER_CH2);
-        break;
-      case 8:
-        IR_send(IR_CODE_ON_OLD_CH2);
-        break;
-      case 9:
-        IR_send(IR_CODE_OFF_OLD_CH2);
-        break;       
-      default:
-        break;
-    }
+    // switch (holdingRegisters[0]) {
+    //   case 1:
+    //     IR_send(IR_CODE_SECURITY_CH1);
+    //     break;
+    //   case 2:
+    //     IR_send(IR_CODE_FULL_MAIN_LIGHT_CH1);
+    //     break;
+    //   case 3:
+    //     IR_send(IR_CODE_INCREASE_CH1);
+    //     break;
+    //   case 4:
+    //     IR_send(IR_CODE_DECREASE_CH1);
+    //     break;
+    //   case 5:
+    //     IR_send(IR_CODE_ON_OFF_CH1);
+    //     break;
+    //   case 6:
+    //     IR_send(IR_CODE_SLEEP_LIGHT_CH1);
+    //     break;
+    //   case 7:
+    //     IR_send(IR_CODE_TIMER_CH1);
+    //     break;
+    //   case 8:
+    //     IR_send(IR_CODE_ON_OLD_CH1);
+    //     break;
+    //   case 9:
+    //     IR_send(IR_CODE_OFF_OLD_CH1);
+    //     break;
+    //   case 10:
+    //     for(uint8_t i =0; i<4; i++)
+    //     {
+    //       IR_send(IR_CODE_INCREASE_CH1);
+    //       delay(500); 
+    //     }
+    //   break; 
+    //   default:
+    //     break;
+    // }
+    // delay_custom(300);
+    // switch (holdingRegisters[1]) {
+    //   case 1:
+    //     IR_send(IR_CODE_SECURITY_CH2);
+    //     break;
+    //   case 2:
+    //     IR_send(IR_CODE_FULL_MAIN_LIGHT_CH2);
+    //     break;
+    //   case 3:
+    //     IR_send(IR_CODE_INCREASE_CH2);
+    //     break;
+    //   case 4:
+    //     IR_send(IR_CODE_DECREASE_CH2);
+    //     break;
+    //   case 5:
+    //     IR_send(IR_CODE_ON_OFF_CH2);
+    //     Serial1.println("Run5");
+    //     break;
+    //   case 6:
+    //     IR_send(IR_CODE_SLEEP_LIGHT_CH2);
+    //     break;
+    //   case 7:
+    //     IR_send(IR_CODE_TIMER_CH2);
+    //     break;
+    //   case 8:
+    //     IR_send(IR_CODE_ON_OLD_CH2);
+    //     break;
+    //   case 9:
+    //     IR_send(IR_CODE_OFF_OLD_CH2);
+    //     break;       
+    //   default:
+    //     break;
+    // }
     switch (holdingRegisters[2])
     {
       case 1: 
@@ -150,9 +150,9 @@ void loop() {
       default:
       break; 
     }
-    holdingRegisters[0] = 0;
-    holdingRegisters[1] = 0;
-    holdingRegisters[2] = 0;
+    // holdingRegisters[0] = 0;
+    // holdingRegisters[1] = 0;
+    // holdingRegisters[2] = 0;
   }
 }
 
