@@ -220,7 +220,7 @@ void test_sound()
     for(uint8_t i = 0; i<SAMPLE_NUM; i++)
     {
       // Serial1.println(frequency_buff[i]);
-      if((frequency_buff[i] > 2000) && (amplitudeInDB_buff[i] > 37))
+      if((frequency_buff[i] > 2500) && (frequency_buff[i] < 4500) && (amplitudeInDB_buff[i] > 35))
       {
         frequency_avg +=  frequency_buff[i];
         amplitudeInDB_avg += amplitudeInDB_buff[i]; 
@@ -233,14 +233,14 @@ void test_sound()
     holdingRegisters[3] =(uint16_t) frequency_avg; 
     holdingRegisters[4] =(uint16_t) amplitudeInDB_avg;
     holdingRegisters[2] = 0;
-    Serial1.println("Print Buff: \n\r");
-    for(uint8_t i=0; i<SAMPLE_NUM; i++)
-    {
-      Serial1.println("frequency: ");
-      Serial1.println(frequency_buff[i]);
-      Serial1.println("Amplitude: ");
-      Serial1.println(amplitudeInDB_buff[i]); 
-    }
+    // Serial1.println("Print Buff: \n\r");
+    // for(uint8_t i=0; i<SAMPLE_NUM; i++)
+    // {
+    //   Serial1.println("frequency: ");
+    //   Serial1.println(frequency_buff[i]);
+    //   Serial1.println("Amplitude: ");
+    //   Serial1.println(amplitudeInDB_buff[i]); 
+    // }
     for(uint8_t i=0; i<SAMPLE_NUM; i++)
     {
       frequency_buff[i] = 0;
