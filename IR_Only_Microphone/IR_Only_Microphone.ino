@@ -1,17 +1,17 @@
-#include "IR_transmitter.h"
+// #include "IR_transmitter.h"
 #include <ModbusRTUSlave_D.h>
 #include "Arduino.h"
-#include "IR_transmitter.h"
-#include "PinDefinitionsAndMore.h"  // Define macros for input and output pin etc.
-#include <IRremote.hpp>
+
+// #include "PinDefinitionsAndMore.h"  // Define macros for input and output pin etc.
+// #include <IRremote.hpp>
 #include <PDM.h>
 #include "arduinoFFT.h"
 #include <math.h> 
 
-#ifdef SOFTWARE_SERIAL
-#include "SoftwareSerial.h"
-SoftwareSerial mySerial(10, 11);  // RX, TX
-#endif
+// #ifdef SOFTWARE_SERIAL
+// #include "SoftwareSerial.h"
+// SoftwareSerial mySerial(10, 11);  // RX, TX
+// #endif
 
 #define SAMPLE_NUM (200)
 
@@ -53,9 +53,9 @@ void setup() {
   modbus.begin(10, 38400);
 
   // IrSender.begin(4, ENABLE_LED_FEEDBACK, ALTERNATIVE_IR_FEEDBACK_LED_PIN); // Specify send pin and enable feedback LED at default feedback LED pin
-  #if defined(IR_SEND_PIN)
-    IrSender.begin();
-  #endif
+  // #if defined(IR_SEND_PIN)
+  //   IrSender.begin();
+  // #endif
   PDM.onReceive(onPDMData); // Thiết lập hàm xử lý sự kiện, Hàm này phải đặt trước hàm PDM.begin()
   PDM.setBufferSize(sampleSize); // Thiết lập kích thước bộ đệm
   // Khởi tạo PDM với 1 kênh (mono) và tần số lấy mẫu
@@ -220,7 +220,7 @@ void test_sound()
     for(uint8_t i = 0; i<SAMPLE_NUM; i++)
     {
       // Serial1.println(frequency_buff[i]);
-      if(frequency_buff[i] > 2000)
+      if((frequency_buff[i] > 2000) && (amplitudeInDB_buff[i] > 37))
       {
         frequency_avg +=  frequency_buff[i];
         amplitudeInDB_avg += amplitudeInDB_buff[i]; 
@@ -233,6 +233,14 @@ void test_sound()
     holdingRegisters[3] =(uint16_t) frequency_avg; 
     holdingRegisters[4] =(uint16_t) amplitudeInDB_avg;
     holdingRegisters[2] = 0;
+    Serial1.println("Print Buff: \n\r");
+    for(uint8_t i=0; i<SAMPLE_NUM; i++)
+    {
+      Serial1.println("frequency: ");
+      Serial1.println(frequency_buff[i]);
+      Serial1.println("Amplitude: ");
+      Serial1.println(amplitudeInDB_buff[i]); 
+    }
     for(uint8_t i=0; i<SAMPLE_NUM; i++)
     {
       frequency_buff[i] = 0;
@@ -273,10 +281,10 @@ uint32_t CMD_Inverse(uint32_t data) {
   return result;
 }
 
-void IR_send(uint32_t data) {
-  uint32_t cmd;
-  cmd = invert_0_and_1((uint32_t)data);
-  // Serial.print("send --> ");Serial.println(cmd,HEX);
-  IrSender.sendNECRaw(cmd, 0);
-  // delay(350);
-}
+// void IR_send(uint32_t data) {
+//   uint32_t cmd;
+//   cmd = invert_0_and_1((uint32_t)data);
+//   // Serial.print("send --> ");Serial.println(cmd,HEX);
+//   IrSender.sendNECRaw(cmd, 0);
+//   // delay(350);
+// }
