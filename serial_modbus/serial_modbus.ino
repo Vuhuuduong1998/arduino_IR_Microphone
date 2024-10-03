@@ -56,7 +56,7 @@ void loop() {
     for (int i = 0; i < 8; i++) {
       request[i] = Serial.read();
     }
-
+    // Serial1.flush(); 
       uint8_t slaveId = request[0];
       uint8_t functionCode = request[1];
       uint16_t address = (((uint16_t)request[2]) << 8) | request[3];
@@ -68,7 +68,6 @@ void loop() {
       // Kiểm tra CRC
       if (crcReceived == crcCalculated) 
       {
-        // Serial.println("crc");
         if (slaveId == MODBUS_SLAVE_ID)
          {
           if (functionCode == 0x06) 
